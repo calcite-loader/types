@@ -1,0 +1,10 @@
+{
+  "name": "@calcite-loader/types",
+  "version": "0.1.0",
+  "type": "module",
+  "types": "src/index.d.ts",
+  "files": ["src"],
+  "peerDependencies": {
+    "phaser": "~3.90.0"
+  }
+}

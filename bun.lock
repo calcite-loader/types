@@ -1,0 +1,16 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "@calcite-loader/types",
+      "peerDependencies": {
+        "phaser": "~3.90.0",
+      },
+    },
+  },
+  "packages": {
+    "eventemitter3": ["eventemitter3@5.0.4", "", {}, "sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw=="],
+
+    "phaser": ["phaser@3.90.0", "", { "dependencies": { "eventemitter3": "^5.0.1" } }, "sha512-/cziz/5ZIn02uDkC9RzN8VF9x3Gs3XdFFf9nkiMEQT3p7hQlWuyjy4QWosU802qqno2YSLn2BfqwOKLv/sSVfQ=="],
+  }
+}
