@@ -29,9 +29,27 @@ export type ModSetting =
   );
 type SettingValue<T extends ModSetting> = T["default"];
 
+type EventCallback =
+  | ((cb: (prevented: boolean) => void, when: "after") => void)
+  | ((cb: (prevented: boolean) => void) => void)
+  | ((
+    cb: (prevented: boolean, preventDefault: () => void) => void,
+    when: "before",
+  ) => void);
+
 declare global {
   const api: {
-    onLoad: (cb: () => void) => void;
+    onLoad:
+      | ((cb: () => void, when: "before" | "after") => void)
+      | ((cb: () => void) => void);
+    onStart: EventCallback;
+    onPause: EventCallback;
+    onDeath: EventCallback;
+    onSpawn: EventCallback;
+    onComplete: EventCallback;
+    onCube: EventCallback;
+    onShip: EventCallback;
+
     patchMethod: (method: string, modifier: (code: string) => string) => void;
     registerSettings: <T extends Record<string, ModSetting>>(
       settings: T,
