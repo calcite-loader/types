@@ -54,6 +54,8 @@ declare global {
         shipSprite: Phaser.GameObjects.Image;
         killPlayer: () => void;
         reset: () => void;
+        enterShipMode: (portal: any) => void; // TODO: portal type
+        exitShipMode: () => void;
       };
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
