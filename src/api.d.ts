@@ -39,9 +39,7 @@ type EventCallback =
 
 declare global {
   const api: {
-    onLoad:
-      | ((cb: () => void, when: "before" | "after") => void)
-      | ((cb: () => void) => void);
+    onLoad: (cb: () => void) => void;
     onStart: EventCallback;
     onPause: EventCallback;
     onDeath: EventCallback;
