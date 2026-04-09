@@ -52,6 +52,8 @@ declare global {
         rotateActionTime: number;
         rotateActionTotal: number;
         shipSprite: Phaser.GameObjects.Image;
+        killPlayer: () => void;
+        reset: () => void;
       };
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
