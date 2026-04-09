@@ -29,13 +29,14 @@ export type ModSetting =
   );
 type SettingValue<T extends ModSetting> = T["default"];
 
-type EventCallback =
-  | ((cb: (prevented: boolean) => void, when: "after") => void)
-  | ((cb: (prevented: boolean) => void) => void)
-  | ((
+interface EventCallback {
+  (cb: (prevented: boolean) => void): void;
+  (cb: (prevented: boolean) => void, when: "after"): void;
+  (
     cb: (prevented: boolean, preventDefault: () => void) => void,
     when: "before",
-  ) => void);
+  ): void;
+}
 
 declare global {
   const api: {
