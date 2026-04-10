@@ -56,6 +56,11 @@ declare global {
         reset: () => void;
         enterShipMode: (portal: any) => void; // TODO: portal type
         exitShipMode: () => void;
+        drawHitboxes: (
+          graphics: Phaser.GameObjects.Graphics,
+          cameraX: number,
+          cameraY: number,
+        ) => void;
       };
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
