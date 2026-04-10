@@ -49,6 +49,7 @@ declare global {
     onCube: EventCallback;
     onShip: EventCallback;
 
+    patchScript: (name: string, modifier: (code: string) => string) => void;
     patchMethod: (method: string, modifier: (code: string) => string) => void;
     registerSettings: <T extends Record<string, ModSetting>>(
       settings: T,
