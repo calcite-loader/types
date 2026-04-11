@@ -155,6 +155,15 @@ declare global {
         flyCameraTarget: null; // Is it something else sometimes?
         objects: any[]; // TODO: type
         topContainer: Phaser.GameObjects.Container;
+        getNearbySectionObjects: (worldX: number) => any; // TODO: return type
+        checkEnterEffectTriggers: (playerX: number) => void;
+        resetEnterEffectTriggers: () => void;
+        applyEnterEffects: (cameraX: number) => void;
+        setGroundColor: (tint: number) => void;
+        updateAudioScale: (scale: number) => void;
+        resetVisibility: () => void;
+        resetObjects: () => void;
+        updateVisibility: (cameraX: number) => void;
       };
       _levelComplete: () => void;
       _levelWon: boolean;
