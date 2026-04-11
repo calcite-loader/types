@@ -48,6 +48,7 @@ declare global {
     onComplete: EventCallback;
     onCube: EventCallback;
     onShip: EventCallback;
+    onUpdate: EventCallback;
 
     patchScript: (name: string, modifier: (code: string) => string) => void;
     patchMethod: (method: string, modifier: (code: string) => string) => void;
