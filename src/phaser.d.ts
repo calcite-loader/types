@@ -99,6 +99,7 @@ declare global {
       _hooked: true;
       _lastPercent: number;
       _level: {
+        _spawnLevelObjects: (objects: any[]) => void; // TODO: object type
         loadLevel: (levelstring: string) => void;
         _activeEnterEffect: number;
         _activeExitEffect: number;
