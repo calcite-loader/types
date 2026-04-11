@@ -61,6 +61,12 @@ declare global {
           cameraX: number,
           cameraY: number,
         ) => void;
+        syncSprites: (
+          cameraX: number,
+          cameraY: number,
+          delta: number,
+          screenX: number,
+        ) => void;
       };
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
