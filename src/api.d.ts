@@ -29,7 +29,14 @@ export type ModSetting =
   );
 type SettingValue<T extends ModSetting> = T["default"];
 
-interface EventCallback {
+export interface Hotkey {
+  name: string;
+  default: string | string[];
+  onPressed?: () => void;
+  onReleased?: () => void;
+}
+
+export interface EventCallback {
   (cb: (prevented: boolean) => void): void;
   (cb: (prevented: boolean) => void, when: "after"): void;
   (
@@ -52,8 +59,16 @@ declare global {
 
     patchScript: (name: string, modifier: (code: string) => string) => void;
     patchMethod: (method: string, modifier: (code: string) => string) => void;
+
     registerSettings: <T extends Record<string, ModSetting>>(
       settings: T,
     ) => { readonly [K in keyof T]: SettingValue<T[K]> };
+
+    /**
+     * @returns A readonly object where each key corresponds to a hotkey and each value is whether or not that hotkey is currently pressed.
+     */
+    registerHotkeys: <T extends Record<string, Hotkey>>(
+      hotkeys: T,
+    ) => { readonly [K in keyof T]: boolean };
   };
 }
