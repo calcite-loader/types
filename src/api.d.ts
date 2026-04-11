@@ -59,10 +59,10 @@ declare global {
 
     patchScript: (name: string, modifier: (code: string) => string) => void;
     patchMethod: (method: string, modifier: (code: string) => string) => void;
-    createPatchedMethod: (
-      method: Function,
+    createPatchedMethod: <Args extends any[], R>(
+      method: (...args: Args) => R,
       modifier: (code: string) => string,
-    ) => Function;
+    ) => (...args: Args) => R;
 
     registerSettings: <T extends Record<string, ModSetting>>(
       settings: T,
