@@ -67,6 +67,7 @@ declare global {
           delta: number,
           screenX: number,
         ) => void;
+        checkCollisions: (cameraX: number) => void;
       };
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
