@@ -46,6 +46,15 @@ export interface EventCallback {
 }
 
 declare global {
+  interface Window {
+    createImageFromAtlas: (
+      scene: Phaser.Scene,
+      x: number,
+      y: number,
+      frame: string,
+    ) => Phaser.GameObjects.Image;
+  }
+
   const api: {
     onLoad: (cb: () => void) => void;
     onStart: EventCallback;
