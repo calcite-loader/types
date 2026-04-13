@@ -148,7 +148,7 @@ declare global {
         _nearbyBuffer: any[]; // TODO: type
         _scene: typeof window.gdScene;
         _sectionContainers: any[]; // TODO: type
-        _sections: any[]; // TODO: type
+        _sections: Phaser.GameObjects.Image[][];
         _tileW: number;
         _visMaxSec: number;
         _visMinSec: number;
@@ -167,6 +167,18 @@ declare global {
         resetVisibility: () => void;
         resetObjects: () => void;
         updateVisibility: (cameraX: number) => void;
+        _addToSection: (sprite: Phaser.GameObjects.Image) => void;
+        _addVisualSprite: (
+          sprite: Phaser.GameObjects.Image,
+          flaggedDefinition: any,
+        ) => void; // TODO: object definiton type
+        _applyVisualProps: (
+          scene: typeof window.gdScene,
+          sprite: Phaser.GameObjects.Image,
+          frame: string,
+          object: any,
+          definition: any,
+        ) => void; // TODO: missing arg types
       };
       _levelComplete: () => void;
       _levelWon: boolean;
