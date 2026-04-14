@@ -1,3 +1,5 @@
+import type Pako from "pako";
+
 export type ModSetting =
   & {
     name: string;
@@ -53,6 +55,8 @@ declare global {
       y: number,
       frame: string,
     ) => Phaser.GameObjects.Image;
+
+    pako: typeof Pako;
   }
 
   const api: {

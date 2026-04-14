@@ -232,7 +232,7 @@ declare global {
         lastGroundPosY: number;
         lastGroundY: number;
         lastY: number;
-        onCeiling: boolan;
+        onCeiling: boolean;
         onGround: boolean;
         upKeyDown: boolean;
         upKeyPressed: boolean;
