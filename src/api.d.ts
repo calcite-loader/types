@@ -76,6 +76,7 @@ declare global {
       method: (...args: Args) => R,
       modifier: (code: string) => string,
     ) => (...args: Args) => R;
+    getObfuscatedId: (val: string) => number;
 
     registerSettings: <T extends Record<string, ModSetting>>(
       settings: T,
