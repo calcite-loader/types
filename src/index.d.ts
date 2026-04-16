@@ -1,5 +1,2 @@
-/// <reference path="./phaser.d.ts" />
-
 export * from "./api";
-
-export {};
+export * from "./phaser";

@@ -1,5 +1,156 @@
 import type Phaser from "phaser";
 
+export interface GameObject {
+  type: string; // TODO: Enum type?
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  activated: boolean;
+}
+
+export interface Streak {
+  _color: number;
+  _opacity: number;
+  _fadeDelta: number;
+  _minSegSq: number;
+  _maxSeg: number;
+  _maxPoints: number;
+  _stroke: number;
+  _pts: { x: number; y: number; state: number }[];
+  _posR: { x: number; y: number };
+  _posInit: boolean;
+  _active: boolean;
+  _gfx: Phaser.GameObjects.Graphics;
+}
+
+export enum ColorId {
+  Background = 1000,
+  Ground = 1001,
+}
+
+export interface Color {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export interface ColorTransition {
+  from: Color;
+  to: Color;
+  duration: number;
+  elapsed: number;
+  done: boolean;
+  current: Color;
+
+  step: (delta: number) => void;
+}
+
+export interface ColorManager {
+  _colors: Record<ColorId, Color>;
+  _actions: Record<ColorId, ColorTransition>;
+
+  reset: () => void;
+  triggerColor: (
+    colorId: ColorId,
+    targetColor: Color,
+    duration: number,
+  ) => void;
+  step: (delta: number) => void;
+  getColor: (colorId: ColorId) => Color;
+  getHex: (colorId: ColorId) => number;
+}
+
+export interface Player {
+  _flyParticle2Active: boolean;
+  _flyParticle2Emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  _flyParticleActive: boolean;
+  _flyParticleEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  _gameLayer: typeof window.gdScene._level;
+  _landEmitter1: Phaser.GameObjects.Particles.ParticleEmitter;
+  _landEmitter2: Phaser.GameObjects.Particles.ParticleEmitter;
+  _landIdx: boolean;
+  _lastCameraX: number;
+  _lastCameraY: number;
+  _lastLandObject: null | GameObject;
+  _lastXOffset: number;
+  _particleActive: boolean;
+  _particleEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  _playerExtraLayer: null;
+  _playerGlowLayer: { sprite: Phaser.GameObjects.Image };
+  _playerLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
+  _playerOverlayLayer: { sprite: Phaser.GameObjects.Image };
+  _playerSpriteLayer: { sprite: Phaser.GameObjects.Image };
+  _rotation: number;
+  _scene: typeof window.gdScene;
+  _shipDragActive: boolean;
+  _shipDragEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  _shipExtraLayer: null;
+  _shipGlowLayer: { sprite: Phaser.GameObjects.Image };
+  _shipLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
+  _shipOverlayLayer: { sprite: Phaser.GameObjects.Image };
+  _shipSpriteLayer: { sprite: Phaser.GameObjects.Image };
+  _showHitboxes: boolean;
+  _streak: Streak;
+  p: typeof window.gdScene._state;
+  playerSprite: Phaser.GameObjects.Image;
+  rotateActionActive: boolean;
+  rotateActionDuration: number;
+  rotateActionStart: number;
+  rotateActionTime: number;
+  rotateActionTotal: number;
+  shipSprite: Phaser.GameObjects.Image;
+  killPlayer: () => void;
+  reset: () => void;
+  enterShipMode: (portal: GameObject) => void;
+  exitShipMode: () => void;
+  drawHitboxes: (
+    graphics: Phaser.GameObjects.Graphics,
+    cameraX: number,
+    cameraY: number,
+  ) => void;
+  syncSprites: (
+    cameraX: number,
+    cameraY: number,
+    delta: number,
+    screenX: number,
+  ) => void;
+  checkCollisions: (cameraX: number) => void;
+  hitGround: () => void;
+  runRotateAction: () => void;
+  flipMod: () => -1 | 1;
+  _createSprites: () => void;
+  _initParticles: (scene: Phaser.Scene) => void;
+  _updateParticles: (cameraX: number, cameraY: number, delta: number) => void;
+  setCubeVisible: (visible: boolean) => void;
+  setShipVisible: (visible: boolean) => void;
+  _createExplosionPieces: (
+    centerX: number,
+    centerY: number,
+    scale: number,
+  ) => void;
+  updateExplosionPieces: (delta: number) => void;
+  _cleanupExplosion: () => void;
+  _playPortalShine: (object: GameObject) => void;
+  _checkSnapJump: (object: GameObject) => void;
+  _isFallingPastThreshold: () => boolean;
+  stopRotation: () => void;
+  updateRotationAction: (delta: number) => void;
+  convertToClosestRotation: () => number;
+  slerp2D: (from: number, to: number, t: number) => number;
+  updateGroundRotation: (delta: number) => void;
+  updateShipRotation: (delta: number) => void;
+  playerIsFalling: () => boolean;
+  updateJump: (delta: number) => void;
+  _updateFlyJump: (delta: number) => void;
+  setShowHitboxes: (value: boolean) => void;
+  playEndAnimation: (
+    endX: number,
+    onComplete: () => void,
+    portalY?: number,
+  ) => void;
+}
+
 declare global {
   interface Window {
     Phaser: typeof Phaser;
@@ -13,63 +164,7 @@ declare global {
       _bgInitY: number;
       _bgSpeedX: number;
       _bgSpeedY: number;
-      _player: {
-        _flyParticle2Active: boolean;
-        _flyParticle2Emitter: Phaser.GameObjects.Particles.ParticleEmitter;
-        _flyParticleActive: boolean;
-        _flyParticleEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
-        _gameLayer: any; // TODO: figure out type
-        _landEmitter1: Phaser.GameObjects.Particles.ParticleEmitter;
-        _landEmitter2: Phaser.GameObjects.Particles.ParticleEmitter;
-        _landIdx: boolean;
-        _lastCameraX: number;
-        _lastCameraY: number;
-        _lastLandObject: null; // TODO: figure out what this is when it isn't null
-        _lastXOffset: number;
-        _particleActive: boolean;
-        _particleEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
-        _playerExtraLayer: null;
-        _playerGlowLayer: { sprite: Phaser.GameObjects.Image };
-        _playerLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
-        _playerOverlayLayer: { sprite: Phaser.GameObjects.Image };
-        _playerSpriteLayer: { sprite: Phaser.GameObjects.Image };
-        _rotation: number;
-        _scene: typeof window.gdScene;
-        _shipDragActive: boolean;
-        _shipDragEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
-        _shipExtraLayer: null;
-        _shipGlowLayer: { sprite: Phaser.GameObjects.Image };
-        _shipLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
-        _shipOverlayLayer: { sprite: Phaser.GameObjects.Image };
-        _shipSpriteLayer: { sprite: Phaser.GameObjects.Image };
-        _showHitboxes: boolean;
-        _streak: any; // TODO: type
-        p: typeof window.gdScene._state;
-        playerSprite: Phaser.GameObjects.Image;
-        rotateActionActive: boolean;
-        rotateActionDuration: number;
-        rotateActionStart: number;
-        rotateActionTime: number;
-        rotateActionTotal: number;
-        shipSprite: Phaser.GameObjects.Image;
-        killPlayer: () => void;
-        reset: () => void;
-        enterShipMode: (portal: any) => void; // TODO: portal type
-        exitShipMode: () => void;
-        drawHitboxes: (
-          graphics: Phaser.GameObjects.Graphics,
-          cameraX: number,
-          cameraY: number,
-        ) => void;
-        syncSprites: (
-          cameraX: number,
-          cameraY: number,
-          delta: number,
-          screenX: number,
-        ) => void;
-        checkCollisions: (cameraX: number) => void;
-        hitGround: () => void;
-      };
+      _player: Player;
       _fpsText: Phaser.GameObjects.Text;
       _buildHud: () => void;
       _buildInfoPopup: () => void;
@@ -78,18 +173,27 @@ declare global {
       _cameraXRef: { _v: number };
       _cameraY: number;
       _closeInfoPopup: () => void;
-      _colorManager: any; // TODO: Color Manager (class?)
+      _colorManager: ColorManager;
       _copyrightText: Phaser.GameObjects.Text;
       _deathSoundPlayed: boolean;
       _deathTimer: number;
       _deltaBuffer: number;
       _downloadButtons: Phaser.GameObjects.Image[];
-      _drawScale9: (/* TODO: Args, I think it's a ninslice func */) => void;
+      _drawScale9: (
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        textureKey: string,
+        cornerSize: number,
+        tint?: number,
+        alpha?: number,
+      ) => Phaser.GameObjects.Container;
       _endCameraOverride: boolean;
       _endCamTween?: null; // TODO: type when not null
       _endPortalGameY: number;
       _escKey: Phaser.Input.Keyboard.Key;
-      _expandHitArea: (/* TODO: Args */) => void;
+      _expandHitArea: (image: Phaser.GameObjects.Image, mul: number) => void;
       _firstPlay: boolean;
       _fpsAccum: number;
       _fpsFrames: number;
@@ -97,7 +201,7 @@ declare global {
       _glitterCenterY: number;
       _glitterEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
       _hadNewBest: boolean;
-      _hideEndLayer: (/* TODO: Args */) => void;
+      _hideEndLayer: (cb: () => void) => void;
       _hooked: true;
       _lastPercent: number;
       _level: {
@@ -113,7 +217,7 @@ declare global {
         _ceilingStartScreenY: number;
         _ceilingTiles: Phaser.GameObjects.Image[];
         _ceilingY: number | null;
-        _collisionSections: any[][]; //  TODO: type
+        _collisionSections: GameObject[][];
         _colorTriggerIdx: number;
         _colorTriggers: {
           x: number;
@@ -145,9 +249,12 @@ declare global {
         _groundY: number;
         _lastObjectX: number;
         _maxGroundWorldX: number;
-        _nearbyBuffer: any[]; // TODO: type
+        _nearbyBuffer: GameObject[];
         _scene: typeof window.gdScene;
-        _sectionContainers: any[]; // TODO: type
+        _sectionContainers: {
+          additive: Phaser.GameObjects.Container;
+          normal: Phaser.GameObjects.Container;
+        }[];
         _sections: Phaser.GameObjects.Image[][];
         _tileW: number;
         _visMaxSec: number;
@@ -155,10 +262,10 @@ declare global {
         additiveContainer: Phaser.GameObjects.Container;
         container: Phaser.GameObjects.Container;
         endXPos: number;
-        flyCameraTarget: null; // Is it something else sometimes?
-        objects: any[]; // TODO: type
+        flyCameraTarget: null | number;
+        objects: GameObject[];
         topContainer: Phaser.GameObjects.Container;
-        getNearbySectionObjects: (worldX: number) => any; // TODO: return type
+        getNearbySectionObjects: (worldX: number) => GameObject[];
         checkEnterEffectTriggers: (playerX: number) => void;
         resetEnterEffectTriggers: () => void;
         applyEnterEffects: (cameraX: number) => void;
@@ -179,20 +286,26 @@ declare global {
           object: any,
           definition: any,
         ) => void; // TODO: missing arg types
+        _addCollisionToSection: (object: GameObject) => void;
       };
       _levelComplete: () => void;
       _levelWon: boolean;
       _logo: Phaser.GameObjects.Image;
-      _makeBouncyButton: (/* TODO: Args (and return) */) => unknown;
+      _makeBouncyButton: <T extends Phaser.GameObjects.Image>(
+        image: T,
+        baseScale: number,
+        onClick: () => void,
+        isActiveCheck?: () => boolean,
+      ) => T;
       _menuActive: boolean;
       _menuCameraX: number;
       _menuFsBtn: Phaser.GameObjects.Image;
       _menuGlitter: Phaser.GameObjects.Particles.ParticleEmitter;
       _menuInfoBtn: Phaser.GameObjects.Image;
       _newBestShown: boolean;
-      _onFullscreenChange: (/* TODO: Args */) => void;
+      _onFullscreenChange: (fullscreen: boolean) => void;
       _pauseBtn: Phaser.GameObjects.Image;
-      _pauseContainer: null; // IDK, might be something else sometimes
+      _pauseContainer: null | Phaser.GameObjects.Container;
       _paused: boolean;
       _pauseGame: () => void;
       _playBtn: Phaser.GameObjects.Image;
@@ -204,13 +317,13 @@ declare global {
       _positionMenuItems: () => void;
       _prevCameraX: number;
       _pushButton: () => void;
-      _quantizeDelta: (/* TODO: Args */) => void;
+      _quantizeDelta: (delta: number) => void;
       _releaseButton: () => void;
       _resetGameplayState: () => void;
       _restartLevel: () => void;
       _resumeGame: () => void;
       _robLogo: Phaser.GameObjects.Image | null;
-      _setParticleTimeScale: (/* TODO: Args */) => void;
+      _setParticleTimeScale: (scale: number) => void;
       _sfxVolume: number;
       _showCompleteEffect: () => void;
       _showCompleteText: () => void;
@@ -247,5 +360,3 @@ declare global {
     };
   }
 }
-
-export {};
