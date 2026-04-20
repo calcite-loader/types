@@ -61,6 +61,36 @@ export interface ColorManager {
   getHex: (colorId: ColorId) => number;
 }
 
+export interface AudioManager {
+  _scene: Phaser.Scene;
+  _music: null | Phaser.Sound.BaseSound;
+  _userMusicVol: number;
+  _meteringEnabled: boolean;
+  _analyser: null | AnalyserNode;
+  _meterBuffer: null | Float32Array;
+  _meterValue: number;
+  _lastAudio: number;
+  _lastPeak: number;
+  _silenceCounter: number;
+
+  _effectiveVolume: () => number;
+  startMusic: () => void;
+  stopMusic: () => void;
+  pauseMusic: () => void;
+  resumeMusic: () => void;
+  getUserMusicVolume: () => number;
+  setUserMusicVolume: (volume: number) => void;
+  getMusicVolume: () => number;
+  setMusicVolume: (volume: number) => void;
+  fadeInMusic: (duration?: number) => void;
+  fadeOutMusic: (duration?: number) => void;
+  playEffect: (key: string, config?: Phaser.Types.Sound.SoundConfig) => void;
+  _setupAnalyser: () => void;
+  update: (delta: number) => void;
+  getMeteringValue: () => number;
+  reset: () => void;
+}
+
 export interface Player {
   _flyParticle2Active: boolean;
   _flyParticle2Emitter: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -156,6 +186,7 @@ declare global {
     Phaser: typeof Phaser;
     gdGame: Phaser.Game;
     gdScene: Phaser.Scene & {
+      _audio: AudioManager;
       _applyScreenResize: () => void;
       _attempts: number;
       _attemptsLabel: Phaser.GameObjects.Text;
