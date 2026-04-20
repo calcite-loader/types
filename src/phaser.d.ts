@@ -102,7 +102,7 @@ export interface Player {
   shipSprite: Phaser.GameObjects.Image;
   killPlayer: () => void;
   reset: () => void;
-  enterShipMode: (portal: GameObject) => void;
+  enterShipMode: (portal?: GameObject) => void;
   exitShipMode: () => void;
   drawHitboxes: (
     graphics: Phaser.GameObjects.Graphics,
