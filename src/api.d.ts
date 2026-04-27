@@ -47,46 +47,43 @@ export interface EventCallback {
   ): void;
 }
 
+export interface Api {
+  onLoad: (cb: () => void) => void;
+  onStart: EventCallback;
+  onPause: EventCallback;
+  onDeath: EventCallback;
+  onSpawn: EventCallback;
+  onComplete: EventCallback;
+  onCube: EventCallback;
+  onShip: EventCallback;
+  onUpdate: EventCallback;
+
+  patchScript: (name: string, modifier: (code: string) => string) => void;
+  patchMethod: (method: string, modifier: (code: string) => string) => void;
+  createPatchedMethod: <Args extends any[], R>(
+    method: (...args: Args) => R,
+    modifier: (code: string) => string,
+  ) => (...args: Args) => R;
+  getObfuscatedId: (val: string) => number;
+
+  registerSettings: <T extends Record<string, ModSetting>>(
+    settings: T,
+  ) => { readonly [K in keyof T]: SettingValue<T[K]> };
+
+  /**
+   * @returns A readonly object where each key corresponds to a hotkey and each value is whether or not that hotkey is currently pressed.
+   */
+  registerHotkeys: <T extends Record<string, Hotkey>>(
+    hotkeys: T,
+  ) => { readonly [K in keyof T]: boolean };
+
+  lib: <T extends Record<string, any>>(id: string) => T;
+}
+
 declare global {
   interface Window {
-    createImageFromAtlas: (
-      scene: Phaser.Scene,
-      x: number,
-      y: number,
-      frame: string,
-    ) => Phaser.GameObjects.Image;
-
     pako: typeof Pako;
   }
 
-  const api: {
-    onLoad: (cb: () => void) => void;
-    onStart: EventCallback;
-    onPause: EventCallback;
-    onDeath: EventCallback;
-    onSpawn: EventCallback;
-    onComplete: EventCallback;
-    onCube: EventCallback;
-    onShip: EventCallback;
-    onUpdate: EventCallback;
-
-    patchScript: (name: string, modifier: (code: string) => string) => void;
-    patchMethod: (method: string, modifier: (code: string) => string) => void;
-    createPatchedMethod: <Args extends any[], R>(
-      method: (...args: Args) => R,
-      modifier: (code: string) => string,
-    ) => (...args: Args) => R;
-    getObfuscatedId: (val: string) => number;
-
-    registerSettings: <T extends Record<string, ModSetting>>(
-      settings: T,
-    ) => { readonly [K in keyof T]: SettingValue<T[K]> };
-
-    /**
-     * @returns A readonly object where each key corresponds to a hotkey and each value is whether or not that hotkey is currently pressed.
-     */
-    registerHotkeys: <T extends Record<string, Hotkey>>(
-      hotkeys: T,
-    ) => { readonly [K in keyof T]: boolean };
-  };
+  const api: Api;
 }
