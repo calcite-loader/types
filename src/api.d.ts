@@ -65,6 +65,7 @@ export interface Api {
     modifier: (code: string) => string,
   ) => (...args: Args) => R;
   getObfuscatedId: (val: string) => number;
+  extractFunction: (code: string, funcName: string) => string;
 
   registerSettings: <T extends Record<string, ModSetting>>(
     settings: T,
