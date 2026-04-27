@@ -79,6 +79,11 @@ export interface Api {
   ) => { readonly [K in keyof T]: boolean };
 
   lib: <T extends Record<string, any>>(id: string) => T;
+
+  sendMessage: (mod: string, data?: any) => void;
+  onMessage: (cb: (source: string, data: any) => void) => void;
+
+  loadedMods: readonly string[];
 }
 
 declare global {
