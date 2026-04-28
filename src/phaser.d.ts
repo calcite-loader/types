@@ -9,6 +9,27 @@ export interface GameObject {
   activated: boolean;
 }
 
+export enum ObjectType {
+  SOLID = "solid",
+  HAZARD = "hazard",
+  DECORATIVE = "deco",
+  PORTAL = "portal",
+  PAD = "pad",
+  RING = "ring",
+  TRIGGER = "trigger",
+  SPEED = "speed",
+  FLY = "fly",
+  CUBE = "cube",
+}
+
+export interface ObjectDefinition {
+  type: ObjectType;
+  frame: string;
+  gridW: number;
+  gridH: number;
+  sub?: string;
+}
+
 export interface Streak {
   _color: number;
   _opacity: number;
@@ -236,7 +257,7 @@ declare global {
       _hooked: true;
       _lastPercent: number;
       _level: {
-        _spawnLevelObjects: (objects: any[]) => void; // TODO: object type
+        _spawnLevelObjects: (objects: any[]) => void; // TODO: Object type
         loadLevel: (levelstring: string) => void;
         _activeEnterEffect: number;
         _activeExitEffect: number;
@@ -308,15 +329,15 @@ declare global {
         _addToSection: (sprite: Phaser.GameObjects.Image) => void;
         _addVisualSprite: (
           sprite: Phaser.GameObjects.Image,
-          flaggedDefinition: any,
-        ) => void; // TODO: object definiton type
+          flaggedDefinition: ObjectDefinition & { _portalFront?: true },
+        ) => void;
         _applyVisualProps: (
           scene: typeof window.gdScene,
           sprite: Phaser.GameObjects.Image,
           frame: string,
-          object: any,
-          definition: any,
-        ) => void; // TODO: missing arg types
+          object: any, // TODO: Object type
+          definition: ObjectDefinition,
+        ) => void;
         _addCollisionToSection: (object: GameObject) => void;
       };
       _levelComplete: () => void;
