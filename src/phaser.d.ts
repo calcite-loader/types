@@ -1,4 +1,5 @@
 import type Phaser from "phaser";
+import type { ColorId, ObjectType } from "./enums";
 
 export interface GameObject {
   type: string; // TODO: Enum type?
@@ -7,19 +8,6 @@ export interface GameObject {
   w: number;
   h: number;
   activated: boolean;
-}
-
-export enum ObjectType {
-  SOLID = "solid",
-  HAZARD = "hazard",
-  DECORATIVE = "deco",
-  PORTAL = "portal",
-  PAD = "pad",
-  RING = "ring",
-  TRIGGER = "trigger",
-  SPEED = "speed",
-  FLY = "fly",
-  CUBE = "cube",
 }
 
 export interface ObjectDefinition {
@@ -43,11 +31,6 @@ export interface Streak {
   _posInit: boolean;
   _active: boolean;
   _gfx: Phaser.GameObjects.Graphics;
-}
-
-export enum ColorId {
-  Background = 1000,
-  Ground = 1001,
 }
 
 export interface Color {

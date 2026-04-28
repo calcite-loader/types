@@ -1,14 +1,20 @@
 {
   "name": "@calcite-loader/types",
   "license": "CC0-1.0",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "type": "module",
-  "types": "src/index.d.ts",
-  "files": ["src"],
+  "types": "dist/types.d.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && cp src/*.d.ts dist/"
+  },
   "peerDependencies": {
     "phaser": "~3.90.0"
   },
   "dependencies": {
     "@types/pako": "^2.0.4"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
   }
 }
