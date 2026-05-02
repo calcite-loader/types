@@ -274,6 +274,10 @@ declare global {
         _flyCeilingY: number;
         _flyFloorY: number;
         _flyGroundActive: boolean;
+        _computeFlyBounds: (
+          portalY: number,
+        ) => { floorY: number; ceilingY: number };
+        setFlyMode: (active: boolean, portalY: number) => void;
         _groundAnimDuration: number;
         _groundAnimFrom: number;
         _groundAnimTime: number;
@@ -326,6 +330,15 @@ declare global {
           definition: ObjectDefinition,
         ) => void;
         _addCollisionToSection: (object: GameObject) => void;
+        resetGroundState: () => void;
+        resetGroundTiles: (startWorldX: number) => void;
+        shiftGroundTiles: (xDelta: number) => void;
+        updateGroundTiles: (cameraYOffset?: number) => void;
+        resizeScreen: () => void;
+        _buildGround: () => void;
+        stepGroundAnimation: (delta: number) => void;
+        getFloorY: () => number;
+        getCeilingY: () => number;
       };
       _levelComplete: () => void;
       _levelWon: boolean;
