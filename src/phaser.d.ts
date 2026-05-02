@@ -117,6 +117,7 @@ export interface Player {
   _playerLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
   _playerOverlayLayer: { sprite: Phaser.GameObjects.Image };
   _playerSpriteLayer: { sprite: Phaser.GameObjects.Image };
+  _allLayers: ({ sprite: Phaser.GameObjects.Image } | null)[];
   _rotation: number;
   _scene: typeof window.gdScene;
   _shipDragActive: boolean;
