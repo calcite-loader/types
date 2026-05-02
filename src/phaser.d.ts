@@ -190,6 +190,7 @@ declare global {
     Phaser: typeof Phaser;
     gdGame: Phaser.Game;
     gdScene: Phaser.Scene & {
+      toggleGlitter: (active: boolean) => void;
       _audio: AudioManager;
       _applyScreenResize: () => void;
       _attempts: number;
