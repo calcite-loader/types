@@ -21,6 +21,7 @@ export interface ObjectDefinition {
 export interface Streak {
   reset: () => void;
   start: () => void;
+  stop: () => void;
   _color: number;
   _opacity: number;
   _fadeDelta: number;
