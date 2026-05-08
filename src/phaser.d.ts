@@ -189,6 +189,10 @@ export interface Player {
   ) => void;
 }
 
+export interface GroundTile extends Phaser.GameObjects.Image {
+  _worldX: number;
+}
+
 declare global {
   interface Window {
     Phaser: typeof Phaser;
@@ -210,7 +214,7 @@ declare global {
       _buildInfoPopup: () => void;
       _buildPauseOverlay: () => void;
       _cameraX: number;
-      _cameraXRef: { _v: number };
+      _cameraXRef: { _v: number; readonly value: number };
       _cameraY: number;
       _closeInfoPopup: () => void;
       _colorManager: ColorManager;
@@ -250,12 +254,12 @@ declare global {
         _activeEnterEffect: number;
         _activeExitEffect: number;
         _audioScaleSprites: Phaser.GameObjects.Image[];
-        _cameraXRef: { _v: number };
+        _cameraXRef: typeof window.gdScene._cameraXRef;
         _ceilingLine: Phaser.GameObjects.Image;
         _ceilingShadowL: Phaser.GameObjects.Image;
         _ceilingShadowR: Phaser.GameObjects.Image;
         _ceilingStartScreenY: number;
-        _ceilingTiles: Phaser.GameObjects.Image[];
+        _ceilingTiles: GroundTile[];
         _ceilingY: number | null;
         _collisionSections: GameObject[][];
         _colorTriggerIdx: number;
@@ -289,7 +293,7 @@ declare global {
         _groundShadowR: Phaser.GameObjects.Image;
         _groundStartScreenY: number;
         _groundTargetValue: number;
-        _groundTiles: Phaser.GameObjects.Image[];
+        _groundTiles: GroundTile[];
         _groundY: number;
         _lastObjectX: number;
         _maxGroundWorldX: number;
