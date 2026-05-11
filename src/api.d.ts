@@ -1,12 +1,13 @@
 import type Pako from "pako";
 
-export type ModSetting<
-  T extends Record<string, any> = Record<string, any>,
-> =
+export type ModSetting =
   & {
     name: string;
     condition?: (
-      settings: { readonly [K in keyof T]: SettingValue<T[K]> },
+      settings: Record<
+        string,
+        number | string | boolean | ArrayBuffer
+      >,
     ) => boolean;
   }
   & (
@@ -45,15 +46,8 @@ export type ModSetting<
       onChange?: (value: ArrayBuffer) => void;
     }
   );
-type SettingValue<T extends ModSetting<any>> = T["default"];
-
-type ExtractContextValues<T> = {
-  [K in keyof T]: T[K] extends ModSetting<any> ? SettingValue<T[K]> : never;
-};
-
-type RegisterSettingsInput<T extends Record<string, any>> = {
-  [K in keyof T]: ModSetting<ExtractContextValues<T>>;
-};
+type SettingValue<T extends ModSetting> = T["default"] extends boolean ? boolean
+  : T["default"];
 
 export interface Hotkey {
   name: string;
@@ -91,8 +85,8 @@ export interface Api {
   getObfuscatedId: (val: string) => number;
   extractFunction: (code: string, funcName: string) => string;
 
-  registerSettings: <T extends Record<string, any>>(
-    settings: RegisterSettingsInput<T>,
+  registerSettings: <T extends Record<string, ModSetting>>(
+    settings: T,
   ) => { readonly [K in keyof T]: SettingValue<T[K]> };
 
   /**
@@ -106,6 +100,8 @@ export interface Api {
 
   sendMessage: (mod: string, data?: any) => void;
   onMessage: (cb: (source: string, data: any) => void) => void;
+
+  privilegedFetch: typeof fetch;
 
   loadedMods: readonly string[];
 }
