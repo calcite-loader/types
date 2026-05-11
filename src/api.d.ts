@@ -1,8 +1,13 @@
 import type Pako from "pako";
 
-export type ModSetting =
+export type ModSetting<
+  T extends Record<string, any> = Record<string, any>,
+> =
   & {
     name: string;
+    condition?: (
+      settings: { readonly [K in keyof T]: SettingValue<T[K]> },
+    ) => boolean;
   }
   & (
     | {
@@ -28,8 +33,27 @@ export type ModSetting =
       default: boolean;
       onChange?: (value: boolean) => void;
     }
+    | {
+      type: "select";
+      default: string;
+      options: Record<string, string>;
+      onChange?: (value: string) => void;
+    }
+    | {
+      type: "file";
+      default?: ArrayBuffer;
+      onChange?: (value: ArrayBuffer) => void;
+    }
   );
-type SettingValue<T extends ModSetting> = T["default"];
+type SettingValue<T extends ModSetting<any>> = T["default"];
+
+type ExtractContextValues<T> = {
+  [K in keyof T]: T[K] extends ModSetting<any> ? SettingValue<T[K]> : never;
+};
+
+type RegisterSettingsInput<T extends Record<string, any>> = {
+  [K in keyof T]: ModSetting<ExtractContextValues<T>>;
+};
 
 export interface Hotkey {
   name: string;
@@ -67,8 +91,8 @@ export interface Api {
   getObfuscatedId: (val: string) => number;
   extractFunction: (code: string, funcName: string) => string;
 
-  registerSettings: <T extends Record<string, ModSetting>>(
-    settings: T,
+  registerSettings: <T extends Record<string, any>>(
+    settings: RegisterSettingsInput<T>,
   ) => { readonly [K in keyof T]: SettingValue<T[K]> };
 
   /**
