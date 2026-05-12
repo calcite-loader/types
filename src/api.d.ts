@@ -101,7 +101,10 @@ export interface Api {
   sendMessage: (mod: string, data?: any) => void;
   onMessage: (cb: (source: string, data: any) => void) => void;
 
-  privilegedFetch: typeof fetch;
+  privilegedFetch: (
+    input: RequestInfo | URL,
+    init?: RequestInit,
+  ) => Promise<Uint8Array>;
 
   loadedMods: readonly string[];
 }
